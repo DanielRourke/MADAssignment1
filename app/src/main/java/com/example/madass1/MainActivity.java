@@ -84,8 +84,5 @@ public class MainActivity extends AppCompatActivity {
         ft.commit();
     }
     //TODO Create return function query
-    public Cursor getProductList()
-    {
-        return null;
-    }
+
 }

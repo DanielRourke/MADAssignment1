@@ -9,14 +9,17 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
+import com.example.madass1.MainActivity;
 import com.example.madass1.R;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link EditProductFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
+ * 
  * Use the {@link EditProductFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
@@ -67,7 +70,41 @@ public class EditProductFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_edit_product, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_edit_product, container, false);
+        Button btnAdd = (Button) rootView.findViewById(R.id.button_Add_Record);
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MainActivity main = (MainActivity) getActivity();
+                EditText type = (EditText) view.findViewById(R.id.editText_Type) ;
+                EditText name = (EditText)view.findViewById(R.id.editText_Name);
+                EditText location = (EditText) view.findViewById(R.id.editText_Location) ;
+
+                String nameTxt = name.getText().toString().trim();
+                String locationText = location.getText().toString().trim();
+                String typeTxt = type.getText().toString().trim();
+
+                if( nameTxt != "" && locationText != "" && typeTxt != "")
+                {
+                   if(main.DBmanager.addProduct(nameTxt, locationText, typeTxt, "NoPic" ))
+                   {
+                       Toast.makeText(getContext(), "Recoord added", Toast.LENGTH_SHORT);
+                   }
+                   else
+                   {
+                       Toast.makeText(getContext(), "Recoord Not added Error Failed", Toast.LENGTH_SHORT);
+                   }
+
+                }
+                else
+                {
+                    Toast.makeText(getContext(), "Recoord Not added", Toast.LENGTH_SHORT);
+                }
+
+
+            }
+        });
+        return rootView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

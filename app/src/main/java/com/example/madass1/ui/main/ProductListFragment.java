@@ -122,7 +122,6 @@ public class ProductListFragment extends ListFragment {
     }
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

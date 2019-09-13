@@ -207,6 +207,14 @@ public class DatabaseManager {
         }
     }
 
+    public Cursor retrieveShoping() {
+
+               return db.rawQuery("SELECT Product.ProductId AS _id, Product.Name, Product.Location, Product.Type, Product.PictureFilePath, Shopping.Quantity " +
+                        " FROM " + DB_TABLE_PRODUCT + ", " + DB_TABLE_SHOP +
+                        " WHERE " + DB_TABLE_PRODUCT + ".ProductId = " + DB_TABLE_SHOP + ".ProductId ;",  null
+                );
+    }
+
     public ArrayList<String> retrieveRows() {
         ArrayList<String> productRows = new ArrayList<String>();
         String[] columns = new String[] {"ProductId", "Name", "Location", "Type", "PictureFilePath"};

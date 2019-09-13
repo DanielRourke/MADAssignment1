@@ -3,6 +3,7 @@ package com.example.madass1;
 import android.database.Cursor;
 import android.os.Bundle;
 
+import com.example.madass1.ui.main.EditProductFragment;
 import com.example.madass1.ui.main.MainFragment;
 import com.example.madass1.ui.main.ProductListFragment;
 import com.example.madass1.ui.main.TabsFragment;
@@ -23,7 +24,7 @@ import com.example.madass1.ui.main.SectionsPagerAdapter;
 
 
 public class MainActivity extends AppCompatActivity {
-
+    public static final String TAG = "MyActivity";
     public DatabaseManager DBmanager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +84,17 @@ public class MainActivity extends AppCompatActivity {
         ft.addToBackStack(null);
         ft.commit();
     }
+
+
+    public void  addProduct(View view)
+    {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.fragment_placeholder, new EditProductFragment());
+        ft.addToBackStack(null);
+        ft.commit();
+    }
+
+
     //TODO Create return function query
 
 }

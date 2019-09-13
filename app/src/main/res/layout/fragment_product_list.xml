@@ -3,4 +3,7 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.main.ProductListFragment" />
+    tools:context=".ui.main.ProductListFragment"
+    android:choiceMode="multipleChoice"
+    android:id="@+id/listView_Products"
+    android:listSelector="@android:color/holo_blue_light"/>

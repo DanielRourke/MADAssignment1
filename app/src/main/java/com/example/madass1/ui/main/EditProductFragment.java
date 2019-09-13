@@ -35,6 +35,10 @@ public class EditProductFragment extends Fragment {
 
    // private OnFragmentInteractionListener mListener;
 
+    EditText type ;
+    EditText name ;
+    EditText location ;
+
     public EditProductFragment() {
         // Required empty public constructor
     }
@@ -72,35 +76,36 @@ public class EditProductFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_edit_product, container, false);
         Button btnAdd = (Button) rootView.findViewById(R.id.button_Add_Record);
+
+        type = (EditText) rootView.findViewById(R.id.editText_Type) ;
+        name = (EditText)rootView.findViewById(R.id.editText_Name);
+        location = (EditText) rootView.findViewById(R.id.editText_Location) ;
+
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 MainActivity main = (MainActivity) getActivity();
-                EditText type = (EditText) view.findViewById(R.id.editText_Type) ;
-                EditText name = (EditText)view.findViewById(R.id.editText_Name);
-                EditText location = (EditText) view.findViewById(R.id.editText_Location) ;
 
                 String nameTxt = name.getText().toString().trim();
                 String locationText = location.getText().toString().trim();
                 String typeTxt = type.getText().toString().trim();
 
-                if( nameTxt != "" && locationText != "" && typeTxt != "")
+                if( nameTxt.equals("") || locationText.equals("")  || typeTxt.equals(""))
                 {
-                   if(main.DBmanager.addProduct(nameTxt, locationText, typeTxt, "NoPic" ))
-                   {
-                       Toast.makeText(getContext(), "Recoord added", Toast.LENGTH_SHORT);
-                   }
-                   else
-                   {
-                       Toast.makeText(getContext(), "Recoord Not added Error Failed", Toast.LENGTH_SHORT);
-                   }
-
+                    Toast.makeText(getContext(), "Recoord Not added", Toast.LENGTH_SHORT).show();
                 }
                 else
                 {
-                    Toast.makeText(getContext(), "Recoord Not added", Toast.LENGTH_SHORT);
+                    if(main.DBmanager.addProduct(nameTxt, locationText, typeTxt, "NoPic" ))
+                    {
+                        Toast.makeText(getContext(), "Recoord added", Toast.LENGTH_SHORT).show();
+                        getActivity().getSupportFragmentManager().popBackStack();
+                    }
+                    else
+                    {
+                        Toast.makeText(getContext(), "Recoord Not added Error Failed", Toast.LENGTH_SHORT).show();
+                    }
                 }
-
 
             }
         });

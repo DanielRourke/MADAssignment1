@@ -2,10 +2,14 @@ package com.example.madass1.ui.main;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.ResourceCursorAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.madass1.R;
 
@@ -23,9 +27,23 @@ public class ProductCursorAdapter extends ResourceCursorAdapter {
 
             //TODO add Image refence
             //image.setImageResource();
-            name.setText(cursor.getColumnIndexOrThrow("Name"));
-            location.setText(cursor.getColumnIndexOrThrow("Location"));
-            type.setText(cursor.getColumnIndexOrThrow("Type"));
+            name.setText(cursor.getString(cursor.getColumnIndexOrThrow("Name")));
+            location.setText(cursor.getString(cursor.getColumnIndexOrThrow("Location")));
+            type.setText(cursor.getString(cursor.getColumnIndexOrThrow("Type")));
 
         }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent)
+        {
+          convertView = super.getView(position, convertView, parent);
+
+          return convertView;
+        }
+
+//    @Override
+//    public Object getItem(int position)
+//    {
+//        return
+//    }
 }

@@ -1,14 +1,21 @@
 package com.example.madass1.ui.main;
 
+import android.R.color;
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.ListFragment;
 
+import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.example.madass1.MainActivity;
 import com.example.madass1.R;
@@ -25,6 +32,8 @@ public class ProductListFragment extends ListFragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
+
+    private static final String TAG = "ListFragment";
     //private OnListFragmentInteractionListener mListener;
 
     /**
@@ -66,6 +75,35 @@ public class ProductListFragment extends ListFragment {
 
         setListAdapter(adapter);
 
+        ListView listView = view.findViewById(R.id.listView_Products);
+//        listView.setChoiceMode(listView.CHOICE_MODE_MULTIPLE);
+
+//        for(int i =0; i < adapter.getCount(); i++)
+//        {
+//            listView.setItemChecked(i,false);
+//        }
+
         return view;
     }
+
+    @Override
+    public void onListItemClick(ListView list, View v, int position, long id)
+    {
+
+       SparseBooleanArray checked =  list.getCheckedItemPositions();
+
+        //the selection is toggled on default for on click so we just
+        //update background to show selection
+        if(checked.get(position, true))
+        {
+            v.setBackgroundColor(getResources().getColor(color.holo_blue_light));
+        }
+        else
+        {
+            v.setBackgroundColor(getResources().getColor(color.background_light));
+        }
+
+
+    }
+
 }

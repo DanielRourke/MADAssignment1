@@ -33,13 +33,13 @@ public class ProductCursorAdapter extends ResourceCursorAdapter {
 
         }
 
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent)
-        {
-          convertView = super.getView(position, convertView, parent);
-
-          return convertView;
-        }
+//        @Override
+//        public View getView(int position, View convertView, ViewGroup parent)
+//        {
+//          convertView = super.getView(position, convertView, parent);
+//
+//          return convertView;
+//        }
 
 //        @Override
 //        public Object getItem(int position)

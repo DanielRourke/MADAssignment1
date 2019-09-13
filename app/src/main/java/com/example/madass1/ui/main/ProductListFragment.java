@@ -5,12 +5,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.ListFragment;
 
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -27,6 +28,10 @@ import com.example.madass1.R;
  * Activities containing this fragment MUST implement the {@link //OnListFragmentInteractionListener}
  * interface.
  */
+
+//TODO add scrollable
+
+
 public class ProductListFragment extends ListFragment {
 
     // TODO: Customize parameter argument names
@@ -61,7 +66,62 @@ public class ProductListFragment extends ListFragment {
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
+
+        setHasOptionsMenu(true);
+
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        MainActivity main = (MainActivity) getActivity();
+        ListView list = getListView();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_shop_add)
+        {
+            //Gets a list of all checked items
+            //adds to shopping list if they are checked items
+            SparseBooleanArray checked =  list.getCheckedItemPositions();
+
+            Toast.makeText(getContext(), String.valueOf(list.getCheckedItemCount()), Toast.LENGTH_SHORT).show();
+            for ( int i =0; i <checked.size(); i++ )
+            {
+                int key = checked.keyAt(i);
+                if(checked.get(key))
+                {
+                    //Add checked item to database;
+                    main.DBmanager.addShoppingItem(key, 1);
+
+                    //uncheck the list item
+                    list.setItemChecked(key, false);
+
+                    //cast get item to list item and change background color
+                    RelativeLayout r = (RelativeLayout)getListView().getChildAt(key);
+                    r.setBackgroundColor(getResources().getColor(color.background_light));
+
+                }
+            }
+            return true;
+        }
+        else if (id == R.id.action_pantry_add) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        inflater.inflate(R.menu.menu_product_list, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,7 +132,7 @@ public class ProductListFragment extends ListFragment {
 
         //Instantiate  a custom cursor adatper for product list
         ProductCursorAdapter adapter = new ProductCursorAdapter(context,
-                R.layout.fragment_product,main.DBmanager.retrieveProducts() ,0);
+                R.layout.fragment_product_item,main.DBmanager.retrieveProducts() ,0);
 
         setListAdapter(adapter);
 
@@ -117,8 +177,6 @@ public class ProductListFragment extends ListFragment {
             v.setBackgroundColor(getResources().getColor(color.background_light));
         }
 
-
     }
-
 
 }

@@ -3,6 +3,7 @@ package com.example.madass1;
 import android.database.Cursor;
 import android.os.Bundle;
 
+import com.example.madass1.ui.main.AddProductFragment;
 import com.example.madass1.ui.main.EditProductFragment;
 import com.example.madass1.ui.main.MainFragment;
 import com.example.madass1.ui.main.ProductListFragment;
@@ -89,10 +90,19 @@ public class MainActivity extends AppCompatActivity {
     public void  addProduct(View view)
     {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_placeholder, new EditProductFragment());
+        ft.replace(R.id.fragment_placeholder, new AddProductFragment());
         ft.addToBackStack(null);
         ft.commit();
     }
+
+    public void editProduct(int productId)
+    {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.fragment_placeholder, EditProductFragment.newInstance(productId));
+        ft.addToBackStack(null);
+        ft.commit();
+    }
+
 
 
     //TODO Create return function query

@@ -13,6 +13,7 @@ import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -66,7 +67,7 @@ public class ProductListFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_product_list, container, false);
-        MainActivity main = (MainActivity)getActivity();
+        final MainActivity main = (MainActivity)getActivity();
         Context context = view.getContext();
 
         //Instantiate  a custom cursor adatper for product list
@@ -76,6 +77,19 @@ public class ProductListFragment extends ListFragment {
         setListAdapter(adapter);
 
         ListView listView = view.findViewById(R.id.listView_Products);
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    Cursor mycursor = (Cursor) getListView().getItemAtPosition(position);
+
+                    Toast.makeText(getContext(), mycursor.getString(0), Toast.LENGTH_SHORT).show();
+                    main.editProduct(Integer.parseInt(mycursor.getString(0)) );
+
+                    return true;
+                }
+            });
+
 //        listView.setChoiceMode(listView.CHOICE_MODE_MULTIPLE);
 
 //        for(int i =0; i < adapter.getCount(); i++)
@@ -105,5 +119,6 @@ public class ProductListFragment extends ListFragment {
 
 
     }
+
 
 }

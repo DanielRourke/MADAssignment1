@@ -41,9 +41,10 @@ public class ProductCursorAdapter extends ResourceCursorAdapter {
           return convertView;
         }
 
-//    @Override
-//    public Object getItem(int position)
-//    {
-//        return
-//    }
+//        @Override
+//        public Object getItem(int position)
+//        {
+//
+//            return getCursor().getPosition(position).getColumnIndex(0)
+//        }
 }

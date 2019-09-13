@@ -101,6 +101,72 @@ public class DatabaseManager {
         }
     }
 
+    public boolean editProduct( Integer id,  String name, String location, String type, String filePath) {
+        synchronized(this.db) {
+
+            ContentValues updatedProduct = new ContentValues();
+            updatedProduct.put("Name", name);
+            updatedProduct.put("Location", location);
+            updatedProduct.put("Type", type);
+            updatedProduct.put("PictureFilePath", filePath);
+            //where Lines copied from "https://abhiandroid.com/database/operation-sqlite.html"
+            String whereClause = "ProductId=?";
+            String whereArgs[] = {id.toString()};
+            System.out.println(name + ", " + location + ", " + type + ", " + filePath);
+
+
+            try {
+                db.update(DB_TABLE_PRODUCT, updatedProduct ,whereClause ,whereArgs);
+                //db.insertOrThrow(DB_TABLE_PRODUCT, null, newProduct);
+            } catch (Exception e) {
+                Log.e("Error Editing rows", e.toString());
+                e.printStackTrace();
+                return false;
+            }
+            //db.close();
+            return true;
+        }
+    }
+
+    public boolean deleteProduct( Integer id) {
+        synchronized(this.db) {
+
+            String whereClause = "ProductId=?";
+            String whereArgs[] = {id.toString()};
+
+            try {
+                db.delete(DB_TABLE_PRODUCT, whereClause ,whereArgs);
+            } catch (Exception e) {
+                Log.e("Error Editing rows", e.toString());
+                e.printStackTrace();
+                return false;
+            }
+            //db.close();
+            return true;
+        }
+    }
+
+    public Product getProduct(Integer id) {
+
+        synchronized (this.db) {
+            String[] columns = new String[]{"ProductId AS _id", "Name", "Location", "Type", "PictureFilePath"};
+            String whereClause = "_id=?";
+            String whereArgs[] = {id.toString()};
+            Cursor cursor;
+            try {
+                cursor = db.query(DB_TABLE_PRODUCT, columns, whereClause, whereArgs, null, null, null);
+            } catch (Exception e) {
+                Log.e("Error Getting row", e.toString());
+                e.printStackTrace();
+                return null;
+            }
+
+            cursor.moveToFirst();
+            //db.close();
+            return new Product(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4));
+        }
+    }
+
     public boolean addShoppingItem( int productId , int quantity ) {
         synchronized(this.db) {
 
@@ -141,22 +207,22 @@ public class DatabaseManager {
         }
     }
 
-//    public ArrayList<String> retrieveRows() {
-//        ArrayList<String> productRows = new ArrayList<String>();
-//        String[] columns = new String[] {"StudentId", "FirstName", "LastName", "YearOfBirth", "Gender"};
-//        Cursor cursor = db.query(DB_TABLE, columns, null, null, null, null, null);
-//        cursor.moveToFirst();
-//        while (cursor.isAfterLast() == false) {
-//            productRows.add(Integer.toString(cursor.getInt(0)) + ", " + cursor.getString(1) + ", "
-//                    + cursor.getString(2) + ", "+ Integer.toString(cursor.getInt(3)) + ", "
-//                    + cursor.getString(4));
-//            cursor.moveToNext();
-//        }
-//        if (cursor != null && !cursor.isClosed()) {
-//            cursor.close();
-//        }
-//        return productRows;
-//    }
+    public ArrayList<String> retrieveRows() {
+        ArrayList<String> productRows = new ArrayList<String>();
+        String[] columns = new String[] {"ProductId", "Name", "Location", "Type", "PictureFilePath"};
+        Cursor cursor = db.query(DB_TABLE_PRODUCT, columns, null, null, null, null, null);
+        cursor.moveToFirst();
+        while (cursor.isAfterLast() == false) {
+            productRows.add(Integer.toString(cursor.getInt(0)) + ", " + cursor.getString(1) + ", "
+                    + cursor.getString(2) + ", "+ Integer.toString(cursor.getInt(3)) + ", "
+                    + cursor.getString(4));
+            cursor.moveToNext();
+        }
+        if (cursor != null && !cursor.isClosed()) {
+            cursor.close();
+        }
+        return productRows;
+    }
 
     public Cursor retrieveProducts() {
         String[] columns = new String[] {"ProductId AS _id", "Name", "Location", "Type", "PictureFilePath"};
@@ -198,5 +264,29 @@ public class DatabaseManager {
             db.execSQL("DROP TABLE IF EXISTS " + DB_TABLE_PANTRY);
             onCreate(db);
         }
+    }
+
+    public class Product
+    {
+        public Integer id;
+        public String name;
+        public String location;
+        public String type;
+        public String picturePath;
+        Product(int i, String n, String l, String t, String p)
+        {
+            id = i;
+            name = n;
+            location = l;
+            type = t;
+            picturePath = p;
+        }
+
+        public String getId()
+        {
+            return id.toString();
+        }
+
+
     }
 }

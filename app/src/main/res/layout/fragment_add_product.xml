@@ -21,13 +21,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="20dp"
-                 />
+                android:text="Product ID" />
 
             <TextView
                 android:id="@+id/textView_ProductId"
                 android:layout_width="260dp"
-                android:layout_height="wrap_content"
-                android:text="Product ID"/>
+                android:layout_height="wrap_content" />
         </TableRow>
 
         <TableRow>
@@ -98,7 +97,7 @@
 
 
     <Button
-        android:id="@+id/button_Delete_Product"
+        android:id="@+id/button_Clear_Fields"
         android:layout_width="126dp"
         android:layout_height="69dp"
         android:layout_marginStart="52dp"
@@ -107,7 +106,7 @@
         android:layout_marginEnd="52dp"
         android:layout_marginRight="52dp"
         android:layout_marginBottom="104dp"
-        android:text="Delete Product"
+        android:text="Clear Fields"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/button_Add_Record"
         app:layout_constraintHorizontal_bias="0.08"
@@ -116,14 +115,14 @@
         app:layout_constraintVertical_bias="1.0" />
 
     <Button
-        android:id="@+id/button_Edit_Product"
+        android:id="@+id/button_Add_Record"
         android:layout_width="145dp"
         android:layout_height="75dp"
         android:layout_marginTop="233dp"
         android:layout_marginEnd="46dp"
         android:layout_marginRight="46dp"
         android:layout_marginBottom="100dp"
-        android:text="Edit Product"
+        android:text="Add Record"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tableLayout"

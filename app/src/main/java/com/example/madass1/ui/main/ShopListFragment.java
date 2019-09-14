@@ -7,26 +7,30 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.ListFragment;
 
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.madass1.MainActivity;
 import com.example.madass1.R;
 
 
-public class ShopListFragment extends Fragment {
+public class ShopListFragment extends ListFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
-    private String mParam2;
 
-  //  private OnFragmentInteractionListener mListener;
+
 
     public ShopListFragment() {
         // Required empty public constructor
@@ -37,15 +41,14 @@ public class ShopListFragment extends Fragment {
      * this fragment using the provided parameters.
      *
      * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment ShopListFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ShopListFragment newInstance(String param1, String param2) {
+    public static ShopListFragment newInstance(String param1) {
         ShopListFragment fragment = new ShopListFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -55,8 +58,9 @@ public class ShopListFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -68,15 +72,161 @@ public class ShopListFragment extends Fragment {
 
         MainActivity main = (MainActivity) getActivity();
         Context context = getContext();
-        ListView listView = view.findViewById(R.id.listView_Shop);
+      //  ListView listView = view.findViewById(R.id.listView_Shop);
 
-        ProductQuantityCursorAdapter adapter = new ProductQuantityCursorAdapter(context,
-                R.layout.fragment_shop_item, main.DBmanager.retrieveShoping(), 0);
-        listView.setAdapter(adapter);
+        ProductQuantityCursorAdapter adapter;
+        if(mParam1.equals("Shopping"))
+        {
+            adapter  = new ProductQuantityCursorAdapter(context,
+                    R.layout.fragment_shop_item, main.DBmanager.retrieveShoping(), 0);
+        }
+        else if(mParam1.equals("Pantry"))
+        {
+            adapter  = new ProductQuantityCursorAdapter(context,
+                    R.layout.fragment_shop_item, main.DBmanager.retrievePantry(), 0);
+        }
+        else
+        {
+            adapter  = new ProductQuantityCursorAdapter(context,
+                    R.layout.fragment_shop_item, main.DBmanager.retrieveShoping(), 0);
+        }
+
+
+       setListAdapter(adapter);
 
 
 
         return view;
+    }
+
+
+    @Override
+    public void onListItemClick(ListView list, View v, int position, long id)
+    {
+
+        SparseBooleanArray checked =  list.getCheckedItemPositions();
+
+        //the selection is toggled on default for on click so we just
+        //update background to show selection
+        if(checked.get(position, true))
+        {
+            v.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_light));
+        }
+        else
+        {
+            v.setBackgroundColor(getResources().getColor(android.R.color.background_light));
+        }
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        MainActivity main = (MainActivity) getActivity();
+        ListView list = getListView();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_shop_add)
+        {
+            //Gets a list of all checked items
+            //adds to shopping list if they are checked items
+            SparseBooleanArray checked =  list.getCheckedItemPositions();
+
+            Toast.makeText(getContext(), String.valueOf(list.getCheckedItemCount()), Toast.LENGTH_SHORT).show();
+            for ( int i =0; i <checked.size(); i++ )
+            {
+                int key = checked.keyAt(i);
+                if(checked.get(key))
+                {
+
+                    //Add checked item to database;
+                    main.DBmanager.addShoppingItem(key, 1 );
+
+                    //uncheck the list item
+                    list.setItemChecked(key, false);
+
+                    //cast get item to list item and change background color
+                    RelativeLayout r = (RelativeLayout)getListView().getChildAt(key);
+                    r.setBackgroundColor(getResources().getColor(android.R.color.background_light));
+
+                }
+            }
+            return true;
+        }
+        else if (id == R.id.action_pantry_add) {
+            //Gets a list of all checked items
+            //adds to shopping list if they are checked items
+            SparseBooleanArray checked =  list.getCheckedItemPositions();
+
+            Toast.makeText(getContext(), String.valueOf(list.getCheckedItemCount()), Toast.LENGTH_SHORT).show();
+            for ( int i =0; i <checked.size(); i++ )
+            {
+                int key = checked.keyAt(i);
+                if(checked.get(key))
+                {
+                    RelativeLayout r = (RelativeLayout)getListView().getChildAt(key);
+                    TextView txt = (TextView) r.findViewById(R.id.textView_Quantity);
+
+
+                    //Add checked item to pantry
+                    main.DBmanager.addPantryItem(key,Integer.parseInt(txt.getText().toString() ));
+
+                    //uncheck the list item
+                    list.setItemChecked(key, false);
+
+                    //cast get item to list item and change background color
+                    r.setBackgroundColor(getResources().getColor(android.R.color.background_light));
+
+                }
+            }
+            return true;
+        }
+        else if (id == R.id.action_delete) {
+            //Gets a list of all checked items
+            //adds to shopping list if they are checked items
+            SparseBooleanArray checked =  list.getCheckedItemPositions();
+
+            Toast.makeText(getContext(), String.valueOf(list.getCheckedItemCount()), Toast.LENGTH_SHORT).show();
+            for ( int i =0; i <checked.size(); i++ )
+            {
+                int key = checked.keyAt(i);
+                if(checked.get(key))
+                {
+                    //Add checked item to database;
+
+                    if(mParam1.equals("Shopping"))
+                    {
+                        main.DBmanager.deleteShoppingItem(key);
+                    }
+                    else if(mParam1.equals("Pantry"))
+                    {
+                        main.DBmanager.deletePantryItem(key);
+                    }
+
+
+                    //uncheck the list item
+                    list.setItemChecked(key, false);
+//
+//                    //cast get item to list item and change background color
+//                    RelativeLayout r = (RelativeLayout)getListView().getChildAt(key);
+//                    r.setBackgroundColor(getResources().getColor(android.R.color.background_light));
+
+                }
+            }
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        inflater.inflate(R.menu.menu_product_list, menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
 //    // TODO: Rename method, update argument and hook method into UI event

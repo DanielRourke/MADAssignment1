@@ -109,6 +109,28 @@ public class ProductListFragment extends ListFragment {
             return true;
         }
         else if (id == R.id.action_pantry_add) {
+            //Gets a list of all checked items
+            //adds to shopping list if they are checked items
+            SparseBooleanArray checked =  list.getCheckedItemPositions();
+
+            Toast.makeText(getContext(), String.valueOf(list.getCheckedItemCount()), Toast.LENGTH_SHORT).show();
+            for ( int i =0; i <checked.size(); i++ )
+            {
+                int key = checked.keyAt(i);
+                if(checked.get(key))
+                {
+                    //Add checked item to database;
+                    main.DBmanager.addPantryItem(key, 1);
+
+                    //uncheck the list item
+                    list.setItemChecked(key, false);
+
+                    //cast get item to list item and change background color
+                    RelativeLayout r = (RelativeLayout)getListView().getChildAt(key);
+                    r.setBackgroundColor(getResources().getColor(color.background_light));
+
+                }
+            }
             return true;
         }
 

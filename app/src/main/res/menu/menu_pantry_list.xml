@@ -9,13 +9,6 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/action_pantry_add"
-        android:orderInCategory="100"
-        android:title="Add to Pantry"
-        app:showAsAction="never" />
-
-
-    <item
         android:id="@+id/action_delete"
         android:orderInCategory="100"
         android:title="Delete"

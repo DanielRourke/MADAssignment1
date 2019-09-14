@@ -169,7 +169,7 @@ public class DatabaseManager {
     public Cursor retrieveProducts() {
         String[] columns = new String[] {"ProductId AS _id", "Name", "Location", "Type", "PictureFilePath"};
 
-        return db.query(DB_TABLE_PRODUCT, columns, null, null, null, null, null);
+        return db.query(DB_TABLE_PRODUCT, columns, null, null, null, null, "Location");
     }
 
     public Cursor retrieveProducts(String orderBy) {

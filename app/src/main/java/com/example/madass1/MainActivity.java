@@ -1,5 +1,6 @@
 package com.example.madass1;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,16 +20,22 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.madass1.ui.main.SectionsPagerAdapter;
 
 
 public class MainActivity extends AppCompatActivity implements ShopListFragment.OnFragmentInteractionListener {
     public static final String TAG = "MyActivity";
+    //private final static int REQUEST_PICK_CONTACT = 1;
+    public final int PICK_CONTACT = 2015;
     public DatabaseManager DBmanager;
+    SendSMS mSender = new SendSMS();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -133,6 +140,53 @@ public class MainActivity extends AppCompatActivity implements ShopListFragment.
             launchTabs(1);
         }
 
+    }
+
+//http://www.enkeladress.com/article/android_snippen_show_contact_picker
+    public void sendShoppingList(View v) {
+
+        // This intent will fire up the contact picker dialog
+        Intent intent = new Intent(Intent.ACTION_PICK,
+                ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
+        startActivityForResult(intent, PICK_CONTACT);
+    }
+//https://stackoverflow.com/questions/18559574/android-contact-picker-with-only-phone-numbers
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        String phoneNo = "0404040404";
+        if (requestCode == PICK_CONTACT && resultCode == RESULT_OK)
+        {
+            Uri contactUri = data.getData();
+            Cursor cursor = getContentResolver().query(contactUri, null, null, null, null);
+            cursor.moveToFirst();
+            int column = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+            phoneNo = cursor.getString(column);
+            Log.d("phone number", cursor.getString(column));
+        }
+
+            Cursor shoppingList = DBmanager.retrieveShopping();
+
+        String message = "";
+
+        while(shoppingList.moveToNext())
+        {
+            message += shoppingList.getString(1) + shoppingList.getString(2) + shoppingList.getString(5);
+        }
+
+
+       //boolean success =  mSender.sendSMSMessage(phoneNo, message );
+
+//        Toast.makeText(this, "Message sent " + (
+//                        success ? "successfully" : "unsuccessfully"),
+//                Toast.LENGTH_SHORT).show();
+
+        Toast.makeText(this, "Sample code provided crashes phone",
+                Toast.LENGTH_SHORT).show();
+
+
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
 

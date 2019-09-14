@@ -1,12 +1,14 @@
 package com.example.madass1;
 
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.example.madass1.ui.main.AddProductFragment;
 import com.example.madass1.ui.main.EditProductFragment;
 import com.example.madass1.ui.main.MainFragment;
 import com.example.madass1.ui.main.ProductListFragment;
+import com.example.madass1.ui.main.ShopListFragment;
 import com.example.madass1.ui.main.TabsFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -24,7 +26,7 @@ import android.view.View;
 import com.example.madass1.ui.main.SectionsPagerAdapter;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ShopListFragment.OnFragmentInteractionListener {
     public static final String TAG = "MyActivity";
     public DatabaseManager DBmanager;
     @Override
@@ -116,8 +118,23 @@ public class MainActivity extends AppCompatActivity {
         ft.commit();
     }
 
+    @Override
+    public void onFragmentInteraction(String location) {
 
 
-    //TODO Create return function query
+        //noinspection SimplifiableIfStatement
+        if (location.equals("Shopping")) {
+            getSupportFragmentManager().popBackStack(null, getSupportFragmentManager().POP_BACK_STACK_INCLUSIVE);
+            launchTabs(0);
+        }
+        else if(location.equals("Pantry"))
+        {
+            getSupportFragmentManager().popBackStack(null, getSupportFragmentManager().POP_BACK_STACK_INCLUSIVE);
+            launchTabs(1);
+        }
+
+    }
+
+
 
 }

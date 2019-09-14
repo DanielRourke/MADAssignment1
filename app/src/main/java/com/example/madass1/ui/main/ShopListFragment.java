@@ -31,7 +31,7 @@ public class ShopListFragment extends ListFragment {
 
     private String mParam1;
 
-
+    private OnFragmentInteractionListener mListener;
 
     public ShopListFragment() {
         // Required empty public constructor
@@ -40,11 +40,9 @@ public class ShopListFragment extends ListFragment {
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     *
      * @param param1 Parameter 1.
      * @return A new instance of fragment ShopListFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static ShopListFragment newInstance(String param1) {
         ShopListFragment fragment = new ShopListFragment();
         Bundle args = new Bundle();
@@ -156,6 +154,7 @@ public class ShopListFragment extends ListFragment {
 
                 }
             }
+            onMenuButtonPressed();
             return true;
         }
         else if (id == R.id.action_pantry_add) {
@@ -184,6 +183,7 @@ public class ShopListFragment extends ListFragment {
 
                 }
             }
+            onMenuButtonPressed();
             return true;
         }
         else if (id == R.id.action_delete) {
@@ -216,13 +216,15 @@ public class ShopListFragment extends ListFragment {
 //                    //cast get item to list item and change background color
 //                    RelativeLayout r = (RelativeLayout)getListView().getChildAt(key);
 //                    r.setBackgroundColor(getResources().getColor(android.R.color.background_light));
-
+                    onMenuButtonPressed();
                 }
             }
             return true;
         }
 
-        return super.onOptionsItemSelected(item);
+        onMenuButtonPressed();
+
+        return false;
     }
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
@@ -240,28 +242,28 @@ public class ShopListFragment extends ListFragment {
     }
 
 //    // TODO: Rename method, update argument and hook method into UI event
-//    public void onButtonPressed(Uri uri) {
-//        if (mListener != null) {
-//            mListener.onFragmentInteraction(uri);
-//        }
-//    }
-//
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
-//    }
-//
-//    @Override
-//    public void onDetach() {
-//        super.onDetach();
-//        mListener = null;
-//    }
+    public void onMenuButtonPressed() {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(mParam1);
+        }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
 //
 //    /**
 //     * This interface must be implemented by activities that contain this
@@ -273,8 +275,8 @@ public class ShopListFragment extends ListFragment {
 //     * "http://developer.android.com/training/basics/fragments/communicating.html"
 //     * >Communicating with Other Fragments</a> for more information.
 //     */
-//    public interface OnFragmentInteractionListener {
-//        // TODO: Update argument type and name
-//        void onFragmentInteraction(Uri uri);
-//    }
+    public interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
+        void onFragmentInteraction(String mParam1);
+    }
 }

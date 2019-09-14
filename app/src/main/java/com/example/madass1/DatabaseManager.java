@@ -367,6 +367,7 @@ public class DatabaseManager {
                         " WHERE ProductId =? ;",  whereArgs);
 
 
+                //If exist update
                 if(  cursor.moveToFirst())//Insert
                 {
                     newPantryItem.put("Quantity", (quantity + cursor.getInt(cursor.getColumnIndexOrThrow("Quantity"))));

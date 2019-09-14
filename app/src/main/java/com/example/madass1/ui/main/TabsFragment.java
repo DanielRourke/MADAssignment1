@@ -77,6 +77,7 @@ public class TabsFragment extends Fragment {
         tabs.setupWithViewPager(viewPager);
 
         viewPager.setCurrentItem(mParam1);
+
         return rootView;
     }
 

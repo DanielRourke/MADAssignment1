@@ -202,10 +202,10 @@ public class DatabaseManager {
                         " WHERE " + DB_TABLE_PRODUCT + ".ProductId = " + DB_TABLE_SHOP + ".ProductId ;",  null
                 );
 
-                cursor.moveToFirst();
+
 
                 //Insert new row or add row quantity with new quantity
-                if(cursor == null )//Insert
+                if(cursor.isBeforeFirst())//Insert
                 {
                     db.insertOrThrow(DB_TABLE_SHOP, null, newShoppingItem);
                 }
@@ -330,8 +330,8 @@ public class DatabaseManager {
                         " WHERE " + DB_TABLE_PRODUCT + ".ProductId = " + DB_TABLE_PANTRY + ".ProductId ;",  null
                 );
 
-                cursor.moveToFirst();
-                if(cursor == null )//Insert
+
+                if(cursor.isBeforeFirst())//Insert
                 {
                     db.insertOrThrow(DB_TABLE_PANTRY, null, newPantryItem);
                 }
@@ -364,13 +364,15 @@ public class DatabaseManager {
 
             try {
                 //get row from Shop
-                Cursor cursor =  db.rawQuery("SELECT Product.ProductId AS _id, Pantry.Quantity " +
+                Cursor cursor =  db.rawQuery("SELECT Product.ProductId, Pantry.Quantity " +
                         " FROM " + DB_TABLE_PRODUCT + ", " + DB_TABLE_PANTRY +
                         " WHERE " + DB_TABLE_PRODUCT + ".ProductId = " + DB_TABLE_PANTRY + ".ProductId ;",  null
                 );
 
                 cursor.moveToFirst();
-                if(cursor == null )//Insert
+
+
+                if(cursor.getCount() < 1 )//Insert
                 {
                     db.insertOrThrow(DB_TABLE_PANTRY, null, newPantryItem);
                 }

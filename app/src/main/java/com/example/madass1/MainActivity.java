@@ -30,6 +30,15 @@ import android.widget.Toast;
 import com.example.madass1.ui.main.SectionsPagerAdapter;
 
 
+//Daniel Rourke 19386993
+//DECLARATION
+//        I hold a copy of this assignment that I can produce if the original is lost or damaged.
+//        I hereby certify that no part of this assignment/product has been copied from any other
+//        student’s work or from any other source except where due acknowledgement is made in the
+//        assignment.  No part of this assignment/product has been written/produced for me by another
+//        person except where such collaboration has been authorised by the subject lecturer/tutor concerned.
+
+
 public class MainActivity extends AppCompatActivity implements ShopListFragment.OnFragmentInteractionListener {
     public static final String TAG = "MyActivity";
     //private final static int REQUEST_PICK_CONTACT = 1;

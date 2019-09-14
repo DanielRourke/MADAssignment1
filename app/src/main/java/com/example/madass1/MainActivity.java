@@ -63,22 +63,35 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_home) {
+            home();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    public void test(View v)
+    public void home()
+    {
+        getSupportFragmentManager().popBackStack(null, getSupportFragmentManager().POP_BACK_STACK_INCLUSIVE);
+        // Begin the transaction
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        // Replace the contents of the container with the new fragment
+        ft.replace(R.id.fragment_placeholder, new MainFragment());
+        // or ft.add(R.id.your_placeholder, new FooFragment());
+        // Complete the changes added above
+        ft.commit();
+    }
+
+    public void launchTabs(int index)
     {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_placeholder, new TabsFragment());
+        ft.replace(R.id.fragment_placeholder, TabsFragment.newInstance(index));
         ft.addToBackStack(null);
         ft.commit();
     }
 
-    public void launchProductList(View view)
+    public void launchProductList()
     {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_placeholder, new ProductListFragment());
@@ -87,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void  addProduct(View view)
+    public void  launchAddProduct()
     {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_placeholder, new AddProductFragment());
@@ -95,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         ft.commit();
     }
 
-    public void editProduct(int productId)
+    public void launchEditProduct(int productId)
     {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_placeholder, EditProductFragment.newInstance(productId));

@@ -92,7 +92,7 @@
                 android:layout_height="wrap_content"
                 android:imeOptions="actionNext"
                 android:singleLine="true"
-                android:nextFocusDown="@+id/button_Add_Record" />
+                android:nextFocusDown="@+id/button_Add_Product" />
         </TableRow>
     </TableLayout>
 
@@ -109,7 +109,7 @@
         android:layout_marginBottom="104dp"
         android:text="Delete Product"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/button_Add_Record"
+        app:layout_constraintEnd_toStartOf="@+id/button_Add_Product"
         app:layout_constraintHorizontal_bias="0.08"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tableLayout"

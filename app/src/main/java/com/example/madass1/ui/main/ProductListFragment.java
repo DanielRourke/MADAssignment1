@@ -112,7 +112,6 @@ public class ProductListFragment extends ListFragment {
             //Gets a list of all checked items
             //adds to shopping list if they are checked items
             SparseBooleanArray checked =  list.getCheckedItemPositions();
-
             Toast.makeText(getContext(), String.valueOf(list.getCheckedItemCount()), Toast.LENGTH_SHORT).show();
             for ( int i =0; i <checked.size(); i++ )
             {
@@ -132,6 +131,10 @@ public class ProductListFragment extends ListFragment {
                 }
             }
             return true;
+        }
+        else if (id == R.id.action_product_add)
+        {
+            main.launchAddProduct();
         }
 
         return super.onOptionsItemSelected(item);
@@ -157,15 +160,15 @@ public class ProductListFragment extends ListFragment {
 
         setListAdapter(adapter);
 
-        ListView listView = view.findViewById(R.id.listView_Products);
+       ListView listView = view.findViewById(R.id.listView_Products);
 
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                    Cursor mycursor = (Cursor) getListView().getItemAtPosition(position);
-
-                    Toast.makeText(getContext(), mycursor.getString(0), Toast.LENGTH_SHORT).show();
-                    main.editProduct(Integer.parseInt(mycursor.getString(0)) );
+                    Cursor myCursor = (Cursor) getListView().getItemAtPosition(position);
+//
+//                    Toast.makeText(getContext(), myCursor.getString(0), Toast.LENGTH_SHORT).show();
+                    main.launchEditProduct(Integer.parseInt(myCursor.getString(0)) );
 
                     return true;
                 }

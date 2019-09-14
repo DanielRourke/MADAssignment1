@@ -72,7 +72,8 @@ public class AddProductFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_add_product, container, false);
-        Button btnAdd = (Button) rootView.findViewById(R.id.button_Add_Record);
+        Button btnAdd = (Button) rootView.findViewById(R.id.button_Add_Product);
+        Button btnClear = (Button) rootView.findViewById(R.id.button_Clear_Fields);
 
         type = (EditText) rootView.findViewById(R.id.editText_Type) ;
         name = (EditText)rootView.findViewById(R.id.editText_Name);
@@ -104,6 +105,19 @@ public class AddProductFragment extends Fragment {
                     }
                 }
 
+            }
+        });
+
+        btnClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String nameTxt = "";
+                String locationText = "";
+                String typeTxt = "";
+
+                type.setText("");
+                name.setText("");
+                location.setText("");
             }
         });
         return rootView;

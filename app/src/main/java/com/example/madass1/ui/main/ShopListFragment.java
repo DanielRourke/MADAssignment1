@@ -227,7 +227,15 @@ public class ShopListFragment extends ListFragment {
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
     {
-        inflater.inflate(R.menu.menu_product_list, menu);
+        if(mParam1.equals("Shopping"))
+        {
+            inflater.inflate(R.menu.menu_shopping_list, menu);
+        }
+        else if(mParam1.equals("Pantry"))
+        {
+            inflater.inflate(R.menu.menu_pantry_list, menu);
+        }
+
         super.onCreateOptionsMenu(menu, inflater);
     }
 

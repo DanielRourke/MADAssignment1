@@ -21,15 +21,13 @@ public class DatabaseManager {
             "Type TEXT, PictureFilePath TEXT);";
 
     private static final String CREATE_TABLE_SHOP ="CREATE TABLE " + DB_TABLE_SHOP +
-            "(ShoppingID INTEGER PRIMARY KEY AUTOINCREMENT, "+
-            "ProductID INTEGER  NOT NULL," +
+            "(ProductID INTEGER  NOT NULL," +
             "Quantity INTEGER NOT NULL," +
             "FOREIGN KEY(ProductId) " +
             "REFERENCES " +DB_TABLE_PRODUCT + "(ProductID));";
 
     private static final String CREATE_TABLE_PANTRY ="CREATE TABLE " + DB_TABLE_PANTRY +
-            "(PantryID INTEGER PRIMARY KEY AUTOINCREMENT, "+
-            "ProductID INTEGER  NOT NULL, " +
+            "(ProductID INTEGER  NOT NULL, " +
             "Quantity INTEGER NOT NULL, " +
             "FOREIGN KEY(ProductId) " +
             "REFERENCES " +DB_TABLE_PRODUCT + "(ProductID));";

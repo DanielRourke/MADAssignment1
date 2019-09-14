@@ -1,7 +1,6 @@
 package com.example.madass1.ui.main;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -9,8 +8,9 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Button;
 
+import com.example.madass1.MainActivity;
 import com.example.madass1.R;
 
 /**
@@ -67,9 +67,44 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_main, container, false);
+        View rootView =  inflater.inflate(R.layout.fragment_main, container, false);
+        final MainActivity main = (MainActivity) getActivity();
+
+        Button viewProductList = rootView.findViewById(R.id.button_launch_product_list);
+        Button viewAddProduct = rootView.findViewById(R.id.button_launch_add_product);
+        Button viewShoppingList = rootView.findViewById(R.id.button_launch_shopping_list);
+        Button viewPantryList = rootView.findViewById(R.id.button_launch_list_pantry);
+
+        viewProductList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                main.launchProductList();
+            }
+        });
+
+        viewAddProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                main.launchAddProduct();
+            }
+        });
+
+        viewShoppingList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                main.launchTabs(0);
+            }
+        });
+
+        viewPantryList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                main.launchTabs(1);
+            }
+        });
+
+        return rootView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

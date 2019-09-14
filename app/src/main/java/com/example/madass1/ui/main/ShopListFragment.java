@@ -1,6 +1,7 @@
 package com.example.madass1.ui.main;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -78,7 +79,7 @@ public class ShopListFragment extends ListFragment {
         if(mParam1.equals("Shopping"))
         {
             adapter  = new ProductQuantityCursorAdapter(context,
-                    R.layout.fragment_shop_item, main.DBmanager.retrieveShoping(), 0);
+                    R.layout.fragment_shop_item, main.DBmanager.retrieveShopping(), 0);
         }
         else if(mParam1.equals("Pantry"))
         {
@@ -88,7 +89,7 @@ public class ShopListFragment extends ListFragment {
         else
         {
             adapter  = new ProductQuantityCursorAdapter(context,
-                    R.layout.fragment_shop_item, main.DBmanager.retrieveShoping(), 0);
+                    R.layout.fragment_shop_item, main.DBmanager.retrieveShopping(), 0);
         }
 
 
@@ -144,7 +145,7 @@ public class ShopListFragment extends ListFragment {
                 {
 
                     //Add checked item to database;
-                    main.DBmanager.addShoppingItem(key, 1 );
+                    main.DBmanager.addShoppingItem((int) list.getAdapter().getItemId(key), 1 );
 
                     //uncheck the list item
                     list.setItemChecked(key, false);
@@ -173,8 +174,8 @@ public class ShopListFragment extends ListFragment {
 
 
                     //Add checked item to pantry
-                    main.DBmanager.addPantryItem(key,Integer.parseInt(txt.getText().toString() ));
-
+                    main.DBmanager.addPantryItem((int) list.getAdapter().getItemId(key), Integer.parseInt(txt.getText().toString() ));
+                    main.DBmanager.deleteShoppingItem((int) list.getAdapter().getItemId(key));
                     //uncheck the list item
                     list.setItemChecked(key, false);
 
@@ -200,11 +201,12 @@ public class ShopListFragment extends ListFragment {
 
                     if(mParam1.equals("Shopping"))
                     {
-                        main.DBmanager.deleteShoppingItem(key);
+
+                        main.DBmanager.deleteShoppingItem((int) list.getAdapter().getItemId(key));
                     }
                     else if(mParam1.equals("Pantry"))
                     {
-                        main.DBmanager.deletePantryItem(key);
+                        main.DBmanager.deletePantryItem((int) list.getAdapter().getItemId(key));
                     }
 
 

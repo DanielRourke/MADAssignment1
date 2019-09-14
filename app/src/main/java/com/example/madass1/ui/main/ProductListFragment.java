@@ -95,7 +95,7 @@ public class ProductListFragment extends ListFragment {
                 if(checked.get(key))
                 {
                     //Add checked item to database;
-                    main.DBmanager.addShoppingItem(key, 1);
+                    main.DBmanager.addShoppingItem((int) list.getAdapter().getItemId(key), 1);
 
                     //uncheck the list item
                     list.setItemChecked(key, false);
@@ -120,7 +120,7 @@ public class ProductListFragment extends ListFragment {
                 if(checked.get(key))
                 {
                     //Add checked item to database;
-                    main.DBmanager.addPantryItem(key, 1);
+                    main.DBmanager.addPantryItem((int) list.getAdapter().getItemId(key), 1);
 
                     //uncheck the list item
                     list.setItemChecked(key, false);

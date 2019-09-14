@@ -197,62 +197,23 @@ public class DatabaseManager {
 
             try {
                 //get row from Shop
-                Cursor cursor =  db.rawQuery("SELECT Product.ProductId AS _id, Shopping.Quantity " +
-                        " FROM " + DB_TABLE_PRODUCT + ", " + DB_TABLE_SHOP +
-                        " WHERE " + DB_TABLE_PRODUCT + ".ProductId = " + DB_TABLE_SHOP + ".ProductId ;",  null
-                );
+                Cursor cursor =  db.rawQuery("SELECT ProductId , Quantity " +
+                        " FROM " + DB_TABLE_SHOP +
+                        " WHERE  ProductId=?" ,  whereArgs);
 
 
 
-                //Insert new row or add row quantity with new quantity
-                if(cursor.isBeforeFirst())//Insert
-                {
-                    db.insertOrThrow(DB_TABLE_SHOP, null, newShoppingItem);
-                }
-                else//add
+                //If EXITS UPDATE ELSE INSERT
+                if(cursor.moveToFirst())//Insert
                 {
                     newShoppingItem.put("Quantity", (quantity + cursor.getInt(cursor.getColumnIndexOrThrow("Quantity"))));
                     db.update(DB_TABLE_SHOP, newShoppingItem ,whereClause ,whereArgs);
+
                 }
-
-            } catch (Exception e) {
-                Log.e("Error in inserting rows", e.toString());
-                e.printStackTrace();
-                return false;
-            }
-            //db.close();
-            return true;
-        }
-    }
-
-    public boolean updateShoppingItem( Integer productId , int quantity ) {
-        synchronized(this.db) {
-
-            ContentValues newShoppingItem = new ContentValues();
-            newShoppingItem.put("ProductId", productId);
-            newShoppingItem.put("Quantity", quantity);
-            String whereClause = "ProductId=?";
-            String whereArgs[] = {productId.toString()};
-
-
-            System.out.println(productId + ", " + quantity);
-
-            try {
-                //get row from Shop
-                Cursor cursor =  db.rawQuery("SELECT Product.ProductId AS _id, Shopping.Quantity " +
-                        " FROM " + DB_TABLE_PRODUCT + ", " + DB_TABLE_SHOP +
-                        " WHERE " + DB_TABLE_PRODUCT + ".ProductId = " + DB_TABLE_SHOP + ".ProductId ;",  null
-                );
-
-                cursor.moveToFirst();
-                if(cursor == null )//Insert
+                else
                 {
                     db.insertOrThrow(DB_TABLE_SHOP, null, newShoppingItem);
                 }
-                else//update
-                {
-                    db.update(DB_TABLE_SHOP, newShoppingItem ,whereClause ,whereArgs);
-                }
 
             } catch (Exception e) {
                 Log.e("Error in inserting rows", e.toString());
@@ -264,8 +225,47 @@ public class DatabaseManager {
         }
     }
 
+//    public boolean updateShoppingItem( Integer productId , int quantity ) {
+//        synchronized(this.db) {
+//
+//            ContentValues newShoppingItem = new ContentValues();
+//            newShoppingItem.put("ProductId", productId);
+//            newShoppingItem.put("Quantity", quantity);
+//            String whereClause = "ProductId=?";
+//            String whereArgs[] = {productId.toString()};
+//
+//
+//            System.out.println(productId + ", " + quantity);
+//
+//            try {
+//                //get row from Shop
+//                Cursor cursor =  db.rawQuery("SELECT Product.ProductId AS _id, Shopping.Quantity " +
+//                        " FROM " + DB_TABLE_PRODUCT + ", " + DB_TABLE_SHOP +
+//                        " WHERE " + DB_TABLE_PRODUCT + ".ProductId = " + DB_TABLE_SHOP + ".ProductId ;",  null
+//                );
+//
+//                //If EXITS UPDATE ELSE INSERT
+//                if( cursor.moveToFirst())
+//                {
+//                    db.update(DB_TABLE_SHOP, newShoppingItem ,whereClause ,whereArgs);
+//                }
+//                else
+//                {
+//                    db.insertOrThrow(DB_TABLE_SHOP, null, newShoppingItem);
+//                }
+//
+//            } catch (Exception e) {
+//                Log.e("Error in inserting rows", e.toString());
+//                e.printStackTrace();
+//                return false;
+//            }
+//            //db.close();
+//            return true;
+//        }
+//    }
 
-    public Cursor retrieveShoping() {
+
+    public Cursor retrieveShopping() {
 
         return db.rawQuery("SELECT Product.ProductId AS _id, Product.Name, Product.Location, Product.Type, Product.PictureFilePath, Shopping.Quantity " +
                 " FROM " + DB_TABLE_PRODUCT + ", " + DB_TABLE_SHOP +
@@ -311,44 +311,44 @@ public class DatabaseManager {
 //        }
 //    }
 
-    public boolean updatePantryItem( Integer productId , int quantity ) {
-        synchronized(this.db) {
-
-            ContentValues newPantryItem = new ContentValues();
-            newPantryItem.put("ProductId", productId);
-            newPantryItem.put("Quantity", quantity);
-            String whereClause = "ProductId=?";
-            String whereArgs[] = {productId.toString()};
-
-
-            System.out.println(productId + ", " + quantity);
-
-            try {
-                //get row from Shop
-                Cursor cursor =  db.rawQuery("SELECT Product.ProductId AS _id, Pantry.Quantity " +
-                        " FROM " + DB_TABLE_PRODUCT + ", " + DB_TABLE_PANTRY +
-                        " WHERE " + DB_TABLE_PRODUCT + ".ProductId = " + DB_TABLE_PANTRY + ".ProductId ;",  null
-                );
-
-
-                if(cursor.isBeforeFirst())//Insert
-                {
-                    db.insertOrThrow(DB_TABLE_PANTRY, null, newPantryItem);
-                }
-                else//update
-                {
-                    db.update(DB_TABLE_PANTRY, newPantryItem ,whereClause ,whereArgs);
-                }
-
-            } catch (Exception e) {
-                Log.e("Error in inserting rows", e.toString());
-                e.printStackTrace();
-                return false;
-            }
-            //db.close();
-            return true;
-        }
-    }
+//    public boolean updatePantryItem( Integer productId , int quantity ) {
+//        synchronized(this.db) {
+//
+//            ContentValues newPantryItem = new ContentValues();
+//            newPantryItem.put("ProductId", productId);
+//            newPantryItem.put("Quantity", quantity);
+//            String whereClause = "ProductId=?";
+//            String whereArgs[] = {productId.toString()};
+//
+//
+//            System.out.println(productId + ", " + quantity);
+//
+//            try {
+//                //get row from Shop
+//                Cursor cursor =  db.rawQuery("SELECT Product.ProductId AS _id, Pantry.Quantity " +
+//                        " FROM " + DB_TABLE_PRODUCT + ", " + DB_TABLE_PANTRY +
+//                        " WHERE " + DB_TABLE_PRODUCT + ".ProductId = " + DB_TABLE_PANTRY + ".ProductId ;",  null
+//                );
+//
+//                //If EXITS UPDATE ELSE INSERT
+//                if(cursor.moveToFirst() )
+//                {
+//                    db.update(DB_TABLE_PANTRY, newPantryItem ,whereClause ,whereArgs);
+//                }
+//                else
+//                {
+//                    db.insertOrThrow(DB_TABLE_PANTRY, null, newPantryItem);
+//                }
+//
+//            } catch (Exception e) {
+//                Log.e("Error in inserting rows", e.toString());
+//                e.printStackTrace();
+//                return false;
+//            }
+//            //db.close();
+//            return true;
+//        }
+//    }
 
     public boolean addPantryItem( Integer productId , int quantity ) {
         synchronized(this.db) {
@@ -364,22 +364,19 @@ public class DatabaseManager {
 
             try {
                 //get row from Shop
-                Cursor cursor =  db.rawQuery("SELECT Product.ProductId, Pantry.Quantity " +
-                        " FROM " + DB_TABLE_PRODUCT + ", " + DB_TABLE_PANTRY +
-                        " WHERE " + DB_TABLE_PRODUCT + ".ProductId = " + DB_TABLE_PANTRY + ".ProductId ;",  null
-                );
-
-                cursor.moveToFirst();
+                Cursor cursor =  db.rawQuery("SELECT ProductId, Quantity " +
+                        " FROM "  + DB_TABLE_PANTRY +
+                        " WHERE ProductId =? ;",  whereArgs);
 
 
-                if(cursor.getCount() < 1 )//Insert
-                {
-                    db.insertOrThrow(DB_TABLE_PANTRY, null, newPantryItem);
-                }
-                else//update
+                if(  cursor.moveToFirst())//Insert
                 {
                     newPantryItem.put("Quantity", (quantity + cursor.getInt(cursor.getColumnIndexOrThrow("Quantity"))));
                     db.update(DB_TABLE_PANTRY, newPantryItem ,whereClause ,whereArgs);
+                }
+                else//update
+                {
+                    db.insertOrThrow(DB_TABLE_PANTRY, null, newPantryItem);
                 }
 
             } catch (Exception e) {
